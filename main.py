@@ -1,12 +1,11 @@
 import numpy as np
 import random
 from config import *
-from models import MultipleLogisticRegression, DecisionTree, KNN
+from models import MultipleLogisticRegression, DecisionTree, KNN, MultipleSoftSVM
 from load import load_dataset
 from training import kfv_train, bootstrap_train, run_metrics
 
 # MODELOS PENDIENTE
-#TODO: KNN
 #TODO: SVM
 # VISUALIZACION PENDIENTE
 #TODO: Display training
@@ -32,12 +31,19 @@ mlr = MultipleLogisticRegression(epochs=epochs, alpha=alpha)
 dt = DecisionTree()
 # 3) KNN
 knn = KNN()
+# 4) SVM
+svm = MultipleSoftSVM(epochs=1000, alpha=0.00001, c=10)
 
+run_metrics(svm,x_train,y_train)
+exit()
 # TRAIN-TEST MODEL
 print("Running ...") 
 run_metrics(knn, x_train, y_train)
 run_metrics(dt, x_train, y_train)
 run_metrics(mlr, x_train, y_train)
+
+
+
 
 
 """
