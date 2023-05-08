@@ -32,19 +32,19 @@ dt = DecisionTree()
 # 3) KNN
 knn = KNN()
 # 4) SVM
-svm = MultipleSoftSVM(epochs=5000, alpha=0.00001, c=10)
+svm = MultipleSoftSVM(epochs=1500, alpha=0.0001, c=10)
 
 
 
 # TRAIN-TEST MODEL
-"""
+#"""
 print("Running ...") 
-run_metrics(svm,x_train,y_train)
+run_metrics(svm,x_train,y_train,n_splits=2, n_bootstraps=2)
 exit()
 run_metrics(knn, x_train, y_train)
 run_metrics(dt, x_train, y_train)
 run_metrics(mlr, x_train, y_train)
-"""
+#"""
 
 
 
@@ -61,8 +61,8 @@ bootstrap_train(mlr, x_train, y_train, n_bootstraps=50)
 
 
 
-
-# SVM example
+"""
+# Simple SVM example
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 svm = SimpleSoftSVM(epochs=2000, alpha=0.0001, c=10)
@@ -74,7 +74,7 @@ print(svm.w)
 print(svm.bias)
 cm = confusion_matrix(y_pred, dy_test)
 print(cm)
-
+"""
 
 
 
