@@ -3,7 +3,7 @@ import random
 from config import *
 from models import MultipleLogisticRegression, DecisionTree, KNN
 from load import load_dataset
-from training import kfv_train, bootstrap_train
+from training import kfv_train, bootstrap_train, run_metrics
 
 # MODELOS PENDIENTE
 #TODO: KNN
@@ -33,7 +33,14 @@ dt = DecisionTree()
 # 3) KNN
 knn = KNN()
 
-# TRAIN MODEL
+# TRAIN-TEST MODEL
+print("Running ...") 
+run_metrics(knn, x_train, y_train)
+run_metrics(dt, x_train, y_train)
+run_metrics(mlr, x_train, y_train)
+
+
+"""
 print("TRAIN:") 
 kfv_train(knn, x_train, y_train, n_splits=10)
 bootstrap_train(knn, x_train, y_train, n_bootstraps=50)
@@ -41,7 +48,7 @@ kfv_train(dt, x_train, y_train, n_splits=10)
 bootstrap_train(dt, x_train, y_train, n_bootstraps=50)
 kfv_train(mlr, x_train, y_train, n_splits=10)
 bootstrap_train(mlr, x_train, y_train, n_bootstraps=50)
-
+"""
 
 # Decision Tree example
 """

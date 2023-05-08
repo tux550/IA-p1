@@ -58,6 +58,8 @@ def bootstrap_train(model, X, y, n_bootstraps=50):
     #best_accuracy_score = max(ls_accuaracy)
     #best_auc_score = max(ls_auc)
 
+    return mean_accuracy_score, mean_auc_score, mean_precision, mean_recall, mean_f1
+
     print("--- Bootstrap Results ---")
     print(f"Mean Accuracy: {mean_accuracy_score}")
     print(f"Mean AUC: {mean_auc_score}")

@@ -9,6 +9,7 @@ class MultipleLogisticRegression:
         self.epochs  = epochs
         self.alpha   = alpha
         self.epsilon = epsilon
+        self.name    = name
 
     # FIT
     def fit(self, X, y):
