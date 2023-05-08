@@ -1,7 +1,7 @@
 import numpy as np
 import random
 from config import *
-from models import MultipleLogisticRegression, DecisionTree
+from models import MultipleLogisticRegression, DecisionTree, KNN
 from load import load_dataset
 from training import kfv_train, bootstrap_train
 
@@ -30,10 +30,18 @@ alpha = 0.15
 mlr = MultipleLogisticRegression(epochs=epochs, alpha=alpha)
 # 2) DT
 dt = DecisionTree()
+# 3) KNN
+knn = KNN()
 
 # TRAIN MODEL
+print("TRAIN:") 
+kfv_train(knn, x_train, y_train, n_splits=10)
+bootstrap_train(knn, x_train, y_train, n_bootstraps=50)
 kfv_train(dt, x_train, y_train, n_splits=10)
 bootstrap_train(dt, x_train, y_train, n_bootstraps=50)
+kfv_train(mlr, x_train, y_train, n_splits=10)
+bootstrap_train(mlr, x_train, y_train, n_bootstraps=50)
+
 
 # Decision Tree example
 """
