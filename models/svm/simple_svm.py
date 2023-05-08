@@ -17,7 +17,6 @@ class SimpleSoftSVM:
     # PREDICT
     def predict(self, X):
         val = self.Hiperplano(X)
-        print(val)
         y_pred = np.sign(val) 
         return y_pred.reshape(-1,1)
     
@@ -44,46 +43,68 @@ class SimpleSoftSVM:
 
     # Funciones de training    
     def Train(self, X, y):
-        self.w    = np.random.rand(X.shape[1])
-        self.bias = np.random.random()
-        y = y.reshape(-1)
+        self.w    = np.random.rand(X.shape[1]) # (20,)
+        self.bias = np.random.random() 
+        y = y.reshape(-1) # (n,)
         Losses = []
         for ep in range(self.epochs):
-            #print(self.w)
             loss = self.Loss(X, y)
             if ep % 1000 == 0:
                 print(f'Epoch {ep}, loss {loss}')
             Losses.append(loss)
+            self.Update(X, y)
+            """
             for idx, x_i in enumerate(X):
                 self.Update(x_i, y[idx])
+            """
         return Losses
     
     # Funciones de Modelo
     def Hiperplano(self, x):
-        Hiperplano = np.dot(x, self.w) + self.bias
+        Hiperplano = x @ self.w + self.bias
         return Hiperplano
     
     def Loss(self, x, y):
         distances = y * (self.Hiperplano(x))
         err       = np.maximum(0, 1 - distances)
-        loss      = (0.5 * np.linalg.norm(self.w)**2) + (self.c * np.sum(err))
+        loss      = (0.5 * np.dot(self.w, self.w)) + (self.c * np.sum(err))
         return loss
     
     def Derivatives(self, x, y):
+        dw = self.w
+        db = 0
+        for x_i, y_i in zip(x,y):
+            pred = y_i*self.Hiperplano(x_i)
+            if pred < 1:
+                dw = dw - self.c*y_i*x_i
+                db = db - self.c*y_i
+        return dw, db
+
+        """
         yh  = y * self.Hiperplano(x)
         if (yh > 1):
             dw = self.w
             db = 0
         else:
-            dw = self.w - np.dot(x,y) * self.c
+            dw = self.w - x * y * self.c
+            #dw = self.w - np.dot(x,y) * self.c
             db = -y * self.c
         return dw, db
+        """
 
+    def Update(self, X, y):
+        dw , db = self.Derivatives(X,y)
+        self.w    = self.w    - self.alpha * dw
+        self.bias = self.bias - self.alpha * db
+
+    """
     def Update(self, x, y):
         dw , db = self.Derivatives(x,y)
         self.w    = self.w    - self.alpha * dw
         self.bias = self.bias - self.alpha * db
-    
+    """
+
+
     # Funciones Extra
     def Sigmoid(self, y):
         sigmoid     = 1 / (1 + np.exp(y))
