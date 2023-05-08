@@ -1,7 +1,7 @@
 import numpy as np
 import random
 from config import *
-from models import MultipleLogisticRegression, DecisionTree, KNN, MultipleSoftSVM
+from models import MultipleLogisticRegression, DecisionTree, KNN, MultipleSoftSVM, SimpleSoftSVM
 from load import load_dataset
 from training import kfv_train, bootstrap_train, run_metrics
 
@@ -18,7 +18,7 @@ random.seed(42)
 np.random.seed(42) 
 
 # LOAD DATASET
-x_train, x_test, y_train = load_dataset()
+x_train, x_test, y_train = load_dataset(N=20)
 
 
 
@@ -32,16 +32,19 @@ dt = DecisionTree()
 # 3) KNN
 knn = KNN()
 # 4) SVM
-svm = MultipleSoftSVM(epochs=1000, alpha=0.00001, c=10)
+svm = MultipleSoftSVM(epochs=5000, alpha=0.00001, c=10)
 
+
+
+# TRAIN-TEST MODEL
+"""
+print("Running ...") 
 run_metrics(svm,x_train,y_train)
 exit()
-# TRAIN-TEST MODEL
-print("Running ...") 
 run_metrics(knn, x_train, y_train)
 run_metrics(dt, x_train, y_train)
 run_metrics(mlr, x_train, y_train)
-
+"""
 
 
 
@@ -56,6 +59,57 @@ kfv_train(mlr, x_train, y_train, n_splits=10)
 bootstrap_train(mlr, x_train, y_train, n_bootstraps=50)
 """
 
+
+
+
+# SVM example
+svm = SimpleSoftSVM(epochs=1500, alpha=1, c=1) #(epochs=2000, alpha=0.00001, c=10)
+from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import train_test_split
+dx_train, dx_test, dy_train, dy_test = train_test_split(x_train, y_train, test_size=0.2, random_state=42)
+
+
+py_train = (dy_train == 2).astype(int) * 2 - 1
+py_test = (dy_test == 2).astype(int) * 2 - 1
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+from sklearn import svm
+
+clf = svm.SVC(kernel='linear') # Linear Kernel. Alternativas: "poly", "rbf", "linear"
+clf.fit(dx_train, py_train.reshape(-1))
+y_pred = clf.predict(dx_test)
+confm  = confusion_matrix(py_test.reshape(-1), y_pred)
+print(confm)
+exit()
+"""
+
+
+
+print(np.unique(py_train, return_counts=True))
+
+print(py_train.reshape(-1))
+print(py_test.reshape(-1))
+
+res = svm.fit(dx_train, py_train)
+y_pred = svm.predict(dx_test)
+cm = confusion_matrix(y_pred, py_test)
+#print(y_pred)
+#print(svm.score(dx_test, py_test))
+#print(svm.class_prob(dx_test))
+print(cm)
+print(svm.w)
+print(svm.bias)
 # Decision Tree example
 """
 from sklearn.metrics import confusion_matrix

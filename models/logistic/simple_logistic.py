@@ -18,7 +18,7 @@ class SimpleLogisticRegression:
         prediction = self.Sigmoid(X)
         rounded    = np.round(prediction).astype(int)
         prediction = np.where(rounded > 0.5, 1, 0)
-        return prediction
+        return prediction.reshape(-1, 1)
     
     # SCORE
     def score(self, X, y):

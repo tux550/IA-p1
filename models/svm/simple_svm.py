@@ -17,6 +17,7 @@ class SimpleSoftSVM:
     # PREDICT
     def predict(self, X):
         val = self.Hiperplano(X)
+        print(val)
         y_pred = np.sign(val) 
         return y_pred.reshape(-1,1)
     
@@ -25,6 +26,15 @@ class SimpleSoftSVM:
         prediction = self.predict(X)
         accuracy   = np.sum(prediction == y) / len(y)
         return accuracy
+
+
+    # CLASS PROB
+    def class_prob(self, X):
+        # TODO: Plat scaling &  MLE (Maximum Likelihood estimator)
+        p        = self.prob(X)
+        prob_mat = np.concatenate([1-p,p], axis=1)
+        return prob_mat
+    
 
     # Prob de y=1
     def prob(self, X):
@@ -38,8 +48,11 @@ class SimpleSoftSVM:
         self.bias = np.random.random()
         y = y.reshape(-1)
         Losses = []
-        for _ in range(self.epochs):
+        for ep in range(self.epochs):
+            #print(self.w)
             loss = self.Loss(X, y)
+            if ep % 1000 == 0:
+                print(f'Epoch {ep}, loss {loss}')
             Losses.append(loss)
             for idx, x_i in enumerate(X):
                 self.Update(x_i, y[idx])
@@ -63,12 +76,12 @@ class SimpleSoftSVM:
             db = 0
         else:
             dw = self.w - np.dot(x,y) * self.c
-            db = - y * self.c
+            db = -y * self.c
         return dw, db
 
     def Update(self, x, y):
         dw , db = self.Derivatives(x,y)
-        self.w    = self.w - self.alpha * dw
+        self.w    = self.w    - self.alpha * dw
         self.bias = self.bias - self.alpha * db
     
     # Funciones Extra
