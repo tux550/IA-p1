@@ -1,0 +1,2 @@
+from .simple_logistic import SimpleLogisticRegression
+from .multiple_logistic import MultipleLogisticRegression
