@@ -63,21 +63,17 @@ bootstrap_train(mlr, x_train, y_train, n_bootstraps=50)
 
 
 # SVM example
-svm = SimpleSoftSVM(epochs=1500, alpha=1, c=1) #(epochs=2000, alpha=0.00001, c=10)
 from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
+svm = SimpleSoftSVM(epochs=2000, alpha=0.0001, c=10)
+y_train = (y_train == 1).astype(int) * 2 - 1
 dx_train, dx_test, dy_train, dy_test = train_test_split(x_train, y_train, test_size=0.2, random_state=42)
-
-
-py_train = (dy_train == 2).astype(int) * 2 - 1
-py_test = (dy_test == 2).astype(int) * 2 - 1
-
-
-
-
-
-
-
+svm.fit(dx_train, dy_train)
+y_pred = svm.predict(dx_test)
+print(svm.w)
+print(svm.bias)
+cm = confusion_matrix(y_pred, dy_test)
+print(cm)
 
 
 
@@ -95,31 +91,3 @@ exit()
 """
 
 
-
-print(np.unique(py_train, return_counts=True))
-
-print(py_train.reshape(-1))
-print(py_test.reshape(-1))
-
-res = svm.fit(dx_train, py_train)
-y_pred = svm.predict(dx_test)
-cm = confusion_matrix(y_pred, py_test)
-#print(y_pred)
-#print(svm.score(dx_test, py_test))
-#print(svm.class_prob(dx_test))
-print(cm)
-print(svm.w)
-print(svm.bias)
-# Decision Tree example
-"""
-from sklearn.metrics import confusion_matrix
-from sklearn.model_selection import train_test_split
-dx_train, dx_test, dy_train, dy_test = train_test_split(x_train, y_train, test_size=0.2, random_state=42)
-dt = DecisionTree()
-res = dt.fit(dx_train, dy_train)
-y_pred = dt.predict(dx_test)
-cm = confusion_matrix(y_pred, dy_test)
-print(cm)
-print(dt.score(dx_test, dy_test))
-print(dt.class_prob(dx_test))
-"""
