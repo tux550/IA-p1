@@ -49,6 +49,7 @@ def kfv_train(model, X, y, n_splits=10):
         # AUC
         y_matrix    = y2matrix(cy_test)
         prob_matrix = model.class_prob(cX_test)
+        print(prob_matrix)
         auc_score = roc_auc_score(y_matrix, prob_matrix)
         ls_auc.append(auc_score)
     

@@ -41,7 +41,7 @@ svm = MultipleSoftSVM(epochs=1500, alpha=0.0001, c=10)
 # TRAIN-TEST MODEL
 #"""
 print("Running ...") 
-run_metrics(svm,x_train,y_train,n_splits=2, n_bootstraps=2)
+run_metrics(svm,x_train,y_train)
 run_metrics(knn, x_train, y_train)
 run_metrics(dt, x_train, y_train)
 run_metrics(mlr, x_train, y_train)

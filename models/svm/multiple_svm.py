@@ -38,7 +38,7 @@ class MultipleSoftSVM:
         # TODO: Plat scaling &  MLE (Maximum Likelihood estimator)
         predictions = []
         for m in self.models:
-            m_pred = (m.prob(X)+1)/2
+            m_pred = m.prob(X)
             predictions.append(m_pred)
         predictions = np.concatenate(predictions, axis=1)
         added_pred  = np.sum(predictions, axis=1)
