@@ -29,9 +29,7 @@ x_train, x_test, y_train = load_dataset(N=20)
 
 # MODEL CONFIG
 # 1) MLR
-epochs = 1000 #10000
-alpha = 0.15
-mlr = MultipleLogisticRegression(epochs=epochs, alpha=alpha)
+mlr = MultipleLogisticRegression(epochs=1500, alpha = 0.15) #10000
 # 2) DT
 dt = DecisionTree()
 # 3) KNN
