@@ -58,7 +58,6 @@ class MultipleLogisticRegression:
         self.models = []
         all_losses = []
         for cls in self.classes:
-            #print(f"Training cls: {cls}")
             y_prime = (y == cls).astype(int)
             model   = SimpleLogisticRegression(self.epochs, self.alpha, self.epsilon)
             losses = model.Train(X, y_prime)

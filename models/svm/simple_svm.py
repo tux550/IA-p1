@@ -49,8 +49,6 @@ class SimpleSoftSVM:
         Losses = []
         for ep in range(self.epochs):
             loss = self.Loss(X, y)
-            if ep % 1000 == 0:
-                print(f'Epoch {ep}, loss {loss}')
             Losses.append(loss)
             self.Update(X, y)
             """

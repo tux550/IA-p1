@@ -22,13 +22,9 @@ class MultipleSoftSVM:
         predictions = []
         for m in self.models:
             m_pred = m.Hiperplano(X) #(m.predict(X)+1)/2            
-            print("X Shape",X.shape)
-            print("mpred shape",m_pred.shape)
             predictions.append(m_pred.reshape(-1,1))
         predictions = np.concatenate(predictions, axis=1)
-        #print(predictions)
         cls_index   = np.argmax(predictions, axis=1)
-        #print(cls_index)
         return np.array([self.classes[i] for i in cls_index]).reshape(-1, 1)
     
     # SCORE
@@ -45,7 +41,6 @@ class MultipleSoftSVM:
             m_pred = (m.prob(X)+1)/2
             predictions.append(m_pred)
         predictions = np.concatenate(predictions, axis=1)
-        print(predictions)
         added_pred  = np.sum(predictions, axis=1)
         prob        = (predictions / added_pred[:,None])
         return prob
@@ -56,13 +51,10 @@ class MultipleSoftSVM:
 
     # Funciones de training    
     def Train(self, X, y):
-        print("Y:",y)
-        print("Y count:",np.unique(y,return_counts=True))
         self.classes = self.get_classes(y)
         self.models = []
         all_losses = []
         for cls in self.classes:
-            #print(f"Training cls: {cls}")
             y_prime = ( (y == cls).astype(int)*2 -1) # 1: Pertenece, -1: No pertenece
             model   = SimpleSoftSVM(self.epochs, self.c, self.alpha, epsilon=self.epsilon)
             losses = model.Train(X, y_prime)
