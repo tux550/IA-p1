@@ -42,54 +42,8 @@ svm = MultipleSoftSVM(epochs=1500, alpha=0.0001, c=10)
 #"""
 print("Running ...") 
 run_metrics(svm,x_train,y_train,n_splits=2, n_bootstraps=2)
-exit()
 run_metrics(knn, x_train, y_train)
 run_metrics(dt, x_train, y_train)
 run_metrics(mlr, x_train, y_train)
 #"""
-
-
-
-
-"""
-print("TRAIN:") 
-kfv_train(knn, x_train, y_train, n_splits=10)
-bootstrap_train(knn, x_train, y_train, n_bootstraps=50)
-kfv_train(dt, x_train, y_train, n_splits=10)
-bootstrap_train(dt, x_train, y_train, n_bootstraps=50)
-kfv_train(mlr, x_train, y_train, n_splits=10)
-bootstrap_train(mlr, x_train, y_train, n_bootstraps=50)
-"""
-
-
-
-"""
-# Simple SVM example
-from sklearn.metrics import confusion_matrix
-from sklearn.model_selection import train_test_split
-svm = SimpleSoftSVM(epochs=2000, alpha=0.0001, c=10)
-y_train = (y_train == 1).astype(int) * 2 - 1
-dx_train, dx_test, dy_train, dy_test = train_test_split(x_train, y_train, test_size=0.2, random_state=42)
-svm.fit(dx_train, dy_train)
-y_pred = svm.predict(dx_test)
-print(svm.w)
-print(svm.bias)
-cm = confusion_matrix(y_pred, dy_test)
-print(cm)
-"""
-
-
-
-
-"""
-from sklearn import svm
-
-clf = svm.SVC(kernel='linear') # Linear Kernel. Alternativas: "poly", "rbf", "linear"
-clf.fit(dx_train, py_train.reshape(-1))
-y_pred = clf.predict(dx_test)
-confm  = confusion_matrix(py_test.reshape(-1), y_pred)
-print(confm)
-exit()
-"""
-
 

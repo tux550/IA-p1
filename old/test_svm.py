@@ -36,3 +36,15 @@ cm = confusion_matrix(y_pred, dy_test)
 print(cm)
 print(svm.w)
 print(svm.bias)
+
+"""
+from sklearn import svm
+
+clf = svm.SVC(kernel='linear') # Linear Kernel. Alternativas: "poly", "rbf", "linear"
+clf.fit(dx_train, py_train.reshape(-1))
+y_pred = clf.predict(dx_test)
+confm  = confusion_matrix(py_test.reshape(-1), y_pred)
+print(confm)
+exit()
+"""
+
