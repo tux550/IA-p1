@@ -5,14 +5,17 @@ from models import MultipleLogisticRegression, DecisionTree, KNN, MultipleSoftSV
 from load import load_dataset
 from training import kfv_train, bootstrap_train, run_metrics
 
+# TEST
+# TODO: Test models
 # VISUALIZACION PENDIENTE
 #TODO: Display training
 # METRICAS PENDIENTES
-#TODO: Fix SVM Auc
-#TODO: Knn con distancias distintas
 #TODO: Confusion matrix (?)
-# TEST
-# TODO: Test models
+#TODO: Knn con distancias distintas
+
+
+# Extra
+#TODO: Fix SVM/Reg Auc
 
 # SEED FOR DETERMINISTIC RESULTS
 # "Answer to the Ultimate Question of Life, the Universe, and Everything"
