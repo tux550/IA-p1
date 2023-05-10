@@ -1,12 +1,14 @@
 import numpy as np
+from sklearn.utils import resample
 
 class SimpleSoftSVM:
-    def __init__(self, epochs, c, alpha, name="SimpleSoftSVM", epsilon=1e-8):
+    def __init__(self, epochs, c, alpha, batch=False, name="SimpleSoftSVM", epsilon=1e-8):
         self.w       = None
         self.bias    = None
         self.epochs  = epochs
         self.c       = c
         self.alpha   = alpha
+        self.batch   = batch
         self.name    = name
         self.epsilon = epsilon
 
@@ -47,10 +49,19 @@ class SimpleSoftSVM:
         self.bias = np.random.random() 
         y = y.reshape(-1) # (n,)
         Losses = []
+        rng = np.arange(len(y))
         for ep in range(self.epochs):
-            loss = self.Loss(X, y)
+            # Get batch
+            if self.batch and self.batch < len(y):
+                ind = resample(rng, replace=False, n_samples=self.batch, random_state = ep)
+                X_batch = X[ind]
+                y_batch = y[ind]
+            else:
+                X_batch = X
+                y_batch = y
+            loss = self.Loss(X_batch, y_batch)
             Losses.append(loss)
-            self.Update(X, y) # Update with all 
+            self.Update(X_batch, y_batch) # Update with all 
         return Losses
     
     # Funciones de Modelo

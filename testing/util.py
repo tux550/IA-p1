@@ -1,7 +1,8 @@
 import itertools
 from rich.console import Console
 from rich.table import Table
-from ..training import run_metrics
+from config import *
+from training import run_metrics
 
 
 def dict_product(dicts):
@@ -24,21 +25,24 @@ def test_param(Model, X, y, p_name, p_ls, params_dict):
     for p in p_ls:
         model_args         = params_dict
         model_args[p_name] = p
+        print("Running:", model_args)
         m = Model(**model_args)
-        metrics = run_metrics(m, X, y)
+        metrics = run_metrics(m, X, y, display_metrics=False)
         p_results[p] = metrics
-    
+
     for method in METHODS:
-        table = Table(title=f"Test Parameter: {p_name} - {method}")
+        title = f"{Model.__name__} Test Parameter: {p_name} - {method}"
+        table = Table(title=title)
         table.add_column(f"{p_name}", justify="right", style="cyan", no_wrap=True)
         for metric in METRICS:
             table.add_column(f"{metric}", justify="right", style="green")
         for p in p_results:
-            row_params = [p,]
+            row_params = [str(p),]
             for metric in METRICS:
-                row_params.append(p_results[p][METHODS][METRICS])
+                row_params.append(str(p_results[p][method][metric]))
             table.add_row(*row_params)
-        console = Console()
+        console = Console(record=True)
         console.print(table)
+        console.save_svg(f"{IMG_FOLDER}/console_{Model.__name__}_{method}_{p_name}.svg")
 
 

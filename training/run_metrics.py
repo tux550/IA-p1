@@ -12,7 +12,7 @@ def run_metrics(model, x_train, y_train, n_splits=10, n_bootstraps=50, display_m
 
     # Metrics
     kfold_metrics     = {
-        "accuracy"  : k_accuracy,
+        "Accuracy"  : k_accuracy,
         "AUC"       : k_auc,
         "Precision" : k_precision,
         "Recall"    : k_recall,

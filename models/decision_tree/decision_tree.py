@@ -3,10 +3,11 @@ import math
 from .nodo  import Nodo
 
 class DecisionTree:
-    def __init__(self, name="DecisionTree"):
-        self.name    = name
-        self.root    = None
-        self.classes = None
+    def __init__(self, name="DecisionTree", max_depth=None):
+        self.name      = name
+        self.root      = None
+        self.classes   = None
+        self.max_depth = max_depth
 
     # FIT
     def fit(self, X, y):
@@ -24,6 +25,7 @@ class DecisionTree:
                     node = node.ge_child
             y = node.label
             Y.append(y)
+
         return np.array(Y).reshape(-1,1)
     
     # SCORE
@@ -55,7 +57,7 @@ class DecisionTree:
     def Train(self, X, y):
         y = y.reshape(-1)
         self.classes = self.get_classes(y)
-        self.root = Nodo(X,y,self.classes)
+        self.root = Nodo(X,y,self.classes, max_depth=self.max_depth, depth=0)
         return None
 
 

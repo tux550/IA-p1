@@ -4,12 +4,13 @@ from .simple_svm import SimpleSoftSVM
 
 
 class MultipleSoftSVM:
-    def __init__(self, epochs, c, alpha, name="SimpleSoftSVM", epsilon=1e-8):
+    def __init__(self, epochs, c, alpha, batch=False, name="SimpleSoftSVM", epsilon=1e-8):
         self.models  = None
         self.classes = None
         self.epochs  = epochs
         self.c       = c
         self.alpha   = alpha
+        self.batch   = batch
         self.name    = name
         self.epsilon = epsilon
 

@@ -2,12 +2,13 @@ import numpy as np
 from sklearn.neighbors import KDTree
 
 class KNN:
-    def __init__(self, name="KNN", k=3):
-        self.name    = name
-        self.x_tree  = None
-        self.y_train = None
-        self.classes = None
-        self.k       = k
+    def __init__(self, distance="minkowski", name="KNN", k=3):
+        self.name     = name
+        self.x_tree   = None
+        self.y_train  = None
+        self.classes  = None
+        self.distance = distance
+        self.k        = k
 
     # FIT
     def fit(self, X, y):
@@ -66,7 +67,7 @@ class KNN:
         # Classes
         self.classes = self.get_classes(y)
         # Store train_dataset in KDTree
-        self.x_tree  = KDTree(X) 
+        self.x_tree  = KDTree(X, metric=self.distance) 
         self.y_train = y
         # Return None
         return None

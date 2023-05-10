@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.utils import resample
 from sklearn.metrics import roc_auc_score
-from sklearn.metrics import precision_score, recall_score, f1_score
+from sklearn.metrics import precision_score, recall_score, f1_score, balanced_accuracy_score
 from .util import y2matrix
 
 def bootstrap_train(model, X, y, n_bootstraps=50, display=False):
@@ -34,6 +34,9 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False):
 
         # Prediction
         y_pred = model.predict(bX_test)
+        # METRICS: Accuracy
+        accuracy_score = balanced_accuracy_score(by_test,y_pred)
+        ls_accuaracy.append(accuracy_score)
         # METRICS: Precision
         precision = precision_score(by_test,y_pred, average=None)
         ls_precision.append(precision)
@@ -44,9 +47,9 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False):
         f1 = f1_score(by_test,y_pred, average=None)
         ls_f1.append(f1)
 
-        # Prediction accuracy
-        accuracy_score = model.score(bX_test, by_test)
-        ls_accuaracy.append(accuracy_score)
+        # Score
+        #accuracy_score = model.score(bX_test, by_test)
+        #ls_accuaracy.append(accuracy_score)
 
         # AUC
         y_matrix    = y2matrix(by_test)

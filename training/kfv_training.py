@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.model_selection import KFold
 from sklearn.metrics import roc_auc_score
-from sklearn.metrics import precision_score, recall_score, f1_score
+from sklearn.metrics import precision_score, recall_score, f1_score, balanced_accuracy_score
 from .util import y2matrix, get_classes
 
 def kfv_train(model, X, y, n_splits=10, display=False):
@@ -30,7 +30,10 @@ def kfv_train(model, X, y, n_splits=10, display=False):
 
 
         # Prediction
-        y_pred = model.predict(cX_test)
+        y_pred = model.predict(cX_test) #print(np.unique(y_pred))
+        # METRICS: Accuracy
+        accuracy_score = balanced_accuracy_score(cy_test,y_pred)
+        ls_accuaracy.append(accuracy_score)
         # METRICS: Precision
         precision = precision_score(cy_test,y_pred, average=None)
         ls_precision.append(precision)
@@ -42,9 +45,9 @@ def kfv_train(model, X, y, n_splits=10, display=False):
         ls_f1.append(f1)
 
 
-        # Prediction accuracy
-        accuracy_score = model.score(cX_test, cy_test)
-        ls_accuaracy.append(accuracy_score)
+        # Score
+        #accuracy_score = model.score(cX_test, cy_test)
+        #ls_accuaracy.append(accuracy_score)
 
         # AUC
         y_matrix    = y2matrix(cy_test)
