@@ -7,13 +7,17 @@ from models import MultipleLogisticRegression, DecisionTree, KNN, MultipleSoftSV
 from load import load_dataset
 from training import kfv_train, bootstrap_train, run_metrics
 
+
 # TEST
-# TODO: Test models
 # TODO: Test between models
 # VISUALIZACION PENDIENTE
-#TODO: Display training
+#TODO: Display training (Promedio de loss)
+
 # METRICAS PENDIENTES
-#TODO: Confusion matrix (?)
+#TODO: Confusion matrix (solo en el mejor de cada modelo)
+
+# TEST
+# TODO: Test (batch size?)
 
 
 # Extra
