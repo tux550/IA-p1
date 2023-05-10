@@ -47,11 +47,11 @@ def run_metrics(model, x_train, y_train, n_splits=10, n_bootstraps=50, display_m
         table = Table(title=f"Metrics: {model.name}")
 
         table.add_column("Training Method", justify="right", style="cyan", no_wrap=True)
-        table.add_column("Accuracy", justify="right", style="green")
-        table.add_column("AUC", justify="right", style="green")
-        table.add_column("Precision", justify="right", style="green")
-        table.add_column("Recall", justify="right", style="green")
-        table.add_column("F1", justify="right", style="green")
+        table.add_column("Accuracy", justify="right", style="green", no_wrap=True)
+        table.add_column("AUC", justify="right", style="green", no_wrap=True)
+        table.add_column("Precision", justify="right", style="green", no_wrap=True)
+        table.add_column("Recall", justify="right", style="green", no_wrap=True)
+        table.add_column("F1", justify="right", style="green", no_wrap=True)
 
         table.add_row("K-Fold Cross-Validation", k_accuracy, k_auc, k_precision, k_recall, k_f1)
         table.add_row("Bootstrap", b_accuracy, b_auc, b_precision, b_recall, b_f1)

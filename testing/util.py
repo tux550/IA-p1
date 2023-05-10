@@ -1,4 +1,5 @@
 import itertools
+import numpy as np
 from rich.console import Console
 from rich.table import Table
 from config import *
@@ -19,7 +20,7 @@ def test_params(Model, X, y, dict_params):
 METHODS=["K-Fold Cross Validation", "Bootstrap"]
 METRICS=["Accuracy","AUC","Precision","Recall","F1"]
 
-def test_param(Model, X, y, p_name, p_ls, params_dict):    
+def test_param(Model, X, y, p_name, p_ls, params_dict, db_name):    
     p_results = {}
     
     for p in p_ls:
@@ -31,18 +32,25 @@ def test_param(Model, X, y, p_name, p_ls, params_dict):
         p_results[p] = metrics
 
     for method in METHODS:
-        title = f"{Model.__name__} Test Parameter: {p_name} - {method}"
+        title = f"{Model.__name__} Test Parameter: {p_name} - {method} ({db_name})"
         table = Table(title=title)
         table.add_column(f"{p_name}", justify="right", style="cyan", no_wrap=True)
         for metric in METRICS:
-            table.add_column(f"{metric}", justify="right", style="green")
+            table.add_column(f"{metric}", justify="center", style="green")
         for p in p_results:
             row_params = [str(p),]
             for metric in METRICS:
-                row_params.append(str(p_results[p][method][metric]))
+                res = p_results[p][method][metric]
+                if type(res) in (np.float32, np.float64):
+                    val = f"{res:.5f}"
+                else:
+                    val = f"{res[0]:.5f}"
+                    for i in range(1,len(res)):
+                        val += f" | {res[i]:.5f}"
+                row_params.append(val)
             table.add_row(*row_params)
         console = Console(record=True)
         console.print(table)
-        console.save_svg(f"{IMG_FOLDER}/console_{Model.__name__}_{method}_{p_name}.svg")
+        console.save_svg(f"{IMG_FOLDER}/console_{db_name}_{Model.__name__}_{method}_{p_name}.svg")
 
 
