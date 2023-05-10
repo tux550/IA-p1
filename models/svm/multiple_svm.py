@@ -21,7 +21,7 @@ class MultipleSoftSVM:
     def predict(self, X):
         predictions = []
         for m in self.models:
-            m_pred = m.Hiperplano(X) #(m.predict(X)+1)/2            
+            m_pred = m.Hiperplano(X)
             predictions.append(m_pred.reshape(-1,1))
         predictions = np.concatenate(predictions, axis=1)
         cls_index   = np.argmax(predictions, axis=1)

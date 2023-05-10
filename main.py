@@ -38,13 +38,16 @@ knn = KNN()
 svm = MultipleSoftSVM(epochs=1500, alpha=0.0001, c=10)
 
 
+# TEST SVM
+#bootstrap_train(dt,x_train,y_train, n_bootstraps=5, display=True)
+#exit()
 
 # TRAIN-TEST MODEL
 #"""
 print("Running ...") 
-run_metrics(svm,x_train,y_train)
-run_metrics(knn, x_train, y_train)
-run_metrics(dt, x_train, y_train)
 run_metrics(mlr, x_train, y_train)
+run_metrics(dt, x_train, y_train)
+run_metrics(knn, x_train, y_train)
+run_metrics(svm,x_train,y_train)
 #"""
 

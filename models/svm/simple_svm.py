@@ -50,11 +50,7 @@ class SimpleSoftSVM:
         for ep in range(self.epochs):
             loss = self.Loss(X, y)
             Losses.append(loss)
-            self.Update(X, y)
-            """
-            for idx, x_i in enumerate(X):
-                self.Update(x_i, y[idx])
-            """
+            self.Update(X, y) # Update with all 
         return Losses
     
     # Funciones de Modelo
@@ -78,30 +74,10 @@ class SimpleSoftSVM:
                 db = db - self.c*y_i
         return dw, db
 
-        """
-        yh  = y * self.Hiperplano(x)
-        if (yh > 1):
-            dw = self.w
-            db = 0
-        else:
-            dw = self.w - x * y * self.c
-            #dw = self.w - np.dot(x,y) * self.c
-            db = -y * self.c
-        return dw, db
-        """
-
     def Update(self, X, y):
         dw , db = self.Derivatives(X,y)
         self.w    = self.w    - self.alpha * dw
         self.bias = self.bias - self.alpha * db
-
-    """
-    def Update(self, x, y):
-        dw , db = self.Derivatives(x,y)
-        self.w    = self.w    - self.alpha * dw
-        self.bias = self.bias - self.alpha * db
-    """
-
 
     # Funciones Extra
     def Sigmoid(self, y):

@@ -1,11 +1,10 @@
 import numpy as np
-from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import precision_score, recall_score, f1_score
 from .util import y2matrix
 
-def bootstrap_train(model, X, y, n_bootstraps=50):
+def bootstrap_train(model, X, y, n_bootstraps=50, display=False):
     # Init results
     ls_accuaracy = []
     ls_auc       = []
@@ -14,13 +13,24 @@ def bootstrap_train(model, X, y, n_bootstraps=50):
     ls_f1        = []
 
     # Bootstrap Train-Test loop
-    bX_train, bX_test, by_train, by_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    for i in range(n_bootstraps):
+    rng = np.arange(len(y))
+    
+    for i in range(n_bootstraps):        
         # Generate a bootstrap sample with replacement
-        X_boot, y_boot = resample(bX_train, by_train, random_state = i)
+        ind = resample(rng, replace=True, n_samples=len(y), random_state = i)
+        mask = np.zeros(len(rng),dtype=bool)
+        mask[ind] = True
+
+        bX_train = X[mask]
+        by_train = y[mask]
+        bX_test = X[~mask]
+        by_test = y[~mask]
+        
+        if len(bX_test) == 0:
+            continue
 
         # Train model
-        model.fit(X_boot, y_boot)
+        model.fit(bX_train, by_train)
 
         # Prediction
         y_pred = model.predict(bX_test)
@@ -54,18 +64,17 @@ def bootstrap_train(model, X, y, n_bootstraps=50):
     mean_recall = ls_recall.sum(axis=0) / len(ls_recall)
     mean_f1 = ls_f1.sum(axis=0) / len(ls_f1)
 
-    # best scores
-    #best_accuracy_score = max(ls_accuaracy)
-    #best_auc_score = max(ls_auc)
+    if display:
+        print("--- Bootstrap Results ---")
+        print(f"Mean Accuracy: {mean_accuracy_score}")
+        print(f"Mean AUC: {mean_auc_score}")
+        print(f"Mean Precision: {mean_precision}")
+        print(f"Mean Recall: {mean_recall}")
+        print(f"Mean F1: {mean_f1}")
 
     return mean_accuracy_score, mean_auc_score, mean_precision, mean_recall, mean_f1
 
-    print("--- Bootstrap Results ---")
-    print(f"Mean Accuracy: {mean_accuracy_score}")
-    print(f"Mean AUC: {mean_auc_score}")
-    print(f"Mean Precision: {mean_precision}")
-    print(f"Mean Recall: {mean_recall}")
-    print(f"Mean F1: {mean_f1}")
+
     
     
 

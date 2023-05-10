@@ -4,7 +4,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.metrics import precision_score, recall_score, f1_score
 from .util import y2matrix, get_classes
 
-def kfv_train(model, X, y, n_splits=10):
+def kfv_train(model, X, y, n_splits=10, display=False):
     # Init results
     ls_accuaracy = []
     ls_auc       = []
@@ -49,7 +49,6 @@ def kfv_train(model, X, y, n_splits=10):
         # AUC
         y_matrix    = y2matrix(cy_test)
         prob_matrix = model.class_prob(cX_test)
-        print(prob_matrix)
         auc_score = roc_auc_score(y_matrix, prob_matrix)
         ls_auc.append(auc_score)
     
@@ -67,15 +66,12 @@ def kfv_train(model, X, y, n_splits=10):
     #best_accuracy_score = max(ls_accuaracy)
     #best_auc_score = max(ls_auc)
 
+    if display:
+        print("--- K-Fold Cross-Validation Results ---")
+        print(f"Mean Accuracy: {mean_accuracy_score}")
+        print(f"Mean AUC: {mean_auc_score}")
+        print(f"Mean Precision: {mean_precision}")
+        print(f"Mean Recall: {mean_recall}")
+        print(f"Mean F1: {mean_f1}")
+
     return mean_accuracy_score, mean_auc_score, mean_precision, mean_recall, mean_f1
-
-    print("--- K-Fold Cross-Validation Results ---")
-    print(f"Mean Accuracy: {mean_accuracy_score}")
-    print(f"Mean AUC: {mean_auc_score}")
-    print(f"Mean Precision: {mean_precision}")
-    print(f"Mean Recall: {mean_recall}")
-    print(f"Mean F1: {mean_f1}")
-    
-    
-
-
