@@ -1,7 +1,7 @@
 import numpy as np
 import random
 from models import MultipleLogisticRegression, MultipleSoftSVM, KNN, DecisionTree
-from .util import test_param
+from .util import test_param, test_models
 
 
 def test_logistic(X, y, db_name, seed=42):
@@ -65,3 +65,13 @@ def test_all(X,y,db_name,seed=42):
     test_logistic(X,y,db_name,seed=seed)
     test_dt(X,y,db_name,seed=seed)
 
+def compare_models(X, y, db_name, seed=42):
+    ls_models = [
+        MultipleLogisticRegression(alpha=1, epochs=3000),
+        MultipleSoftSVM(alpha=0.001, c=20, epochs=300),
+        KNN(distance="minkowski"),
+        DecisionTree(max_depth=None)
+    ]
+    random.seed(seed)
+    np.random.seed(seed) 
+    test_models(ls_models,X,y,db_name)

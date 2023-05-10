@@ -54,3 +54,32 @@ def test_param(Model, X, y, p_name, p_ls, params_dict, db_name):
         console.save_svg(f"{IMG_FOLDER}/console_{db_name}_{Model.__name__}_{method}_{p_name}.svg")
 
 
+
+def test_models(model_ls, X, y, db_name):    
+    m_results = {}
+    for m in model_ls:
+        print("Running:", m.name)
+        metrics = run_metrics(m, X, y, display_metrics=False)
+        m_results[m.name] = metrics
+
+    for method in METHODS:
+        title = f"Test Models - {method} ({db_name})"
+        table = Table(title=title)
+        table.add_column(f"Model", justify="right", style="cyan", no_wrap=True)
+        for metric in METRICS:
+            table.add_column(f"{metric}", justify="center", style="green")
+        for m in m_results:
+            row_params = [str(m),]
+            for metric in METRICS:
+                res = m_results[m][method][metric]
+                if type(res) in (np.float32, np.float64):
+                    val = f"{res:.5f}"
+                else:
+                    val = f"{res[0]:.5f}"
+                    for i in range(1,len(res)):
+                        val += f" | {res[i]:.5f}"
+                row_params.append(val)
+            table.add_row(*row_params)
+        console = Console(record=True)
+        console.print(table)
+        console.save_svg(f"{IMG_FOLDER}/console_{db_name}_models_{method}.svg")

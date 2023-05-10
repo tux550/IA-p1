@@ -1,1 +1,1 @@
-from .tests import test_logistic, test_svm, test_knn, test_dt, test_all
+from .tests import test_logistic, test_svm, test_knn, test_dt, test_all, compare_models

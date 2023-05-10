@@ -76,13 +76,23 @@ class SimpleSoftSVM:
         return loss
     
     def Derivatives(self, x, y):
-        dw = self.w
-        db = 0
+        prod   = y*self.Hiperplano(x) 
+        ifcase = (prod < 1).reshape(-1,1)
+        yvec   = y.reshape(-1,1) 
+        dw     = self.w  - np.sum( (self.c*x*yvec) * ifcase,axis=0)
+        db     = 0       - np.sum( (self.c*yvec  ) * ifcase)
+
+        """
+        # Unoptimized version
+        odw = self.w
+        odb = 0
         for x_i, y_i in zip(x,y):
             pred = y_i*self.Hiperplano(x_i)
             if pred < 1:
-                dw = dw - self.c*y_i*x_i
-                db = db - self.c*y_i
+                odw = odw - self.c*y_i*x_i
+                odb = odb - self.c*y_i
+        """
+        
         return dw, db
 
     def Update(self, X, y):
