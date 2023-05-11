@@ -6,7 +6,7 @@ from rich.table import Table
 
 console = Console()
 
-def run_metrics(model, x_train, y_train, n_splits=10, n_bootstraps=50, display_metrics=False, display_loss=True, save_loss=False, save_dir=None):
+def run_metrics(model, x_train, y_train, n_splits=10, n_bootstraps=50, display_metrics=False, display_loss=False, save_loss=False, save_dir=None):
     k_accuracy, k_auc, k_precision, k_recall, k_f1 = kfv_train(model, x_train, y_train, n_splits=n_splits, display_loss=display_loss, save_loss=save_loss, save_dir=save_dir)
     b_accuracy, b_auc, b_precision, b_recall, b_f1 = bootstrap_train(model, x_train, y_train, n_bootstraps=n_bootstraps, display_loss=display_loss, save_loss=save_loss, save_dir=save_dir)
 
