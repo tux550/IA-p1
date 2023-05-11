@@ -66,7 +66,6 @@ class MultipleSoftSVM:
 
     # Funciones de Display
     def Display(self, all_losses):
-        print(len(self.classes))
         fig, axs = plt.subplots(len(self.classes), 1, figsize=(8, 6*len(self.classes)))
         for i, cls in enumerate(self.classes):
             axs[i].plot(all_losses[i])
