@@ -52,7 +52,7 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False, display_loss=Fa
         # Score
         #accuracy_score = model.score(bX_test, by_test)
         #ls_accuaracy.append(accuracy_score)
-        
+
         # AUC
         y_matrix    = y2matrix(by_test)
         prob_matrix = model.class_prob(bX_test)
@@ -77,7 +77,7 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False, display_loss=Fa
         print(f"Mean Recall: {mean_recall}")
         print(f"Mean F1: {mean_f1}")
 
-    if(loss and display_loss): 
+    if(loss): 
         ls_loss = np.array(ls_loss)
         ls_loss = np.mean(ls_loss,axis=0)
         if display_loss:
