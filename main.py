@@ -1,7 +1,7 @@
 import numpy as np
 import time
 from config import *
-from testing import test_all, compare_models
+from testing import test_all, test_logistic, compare_models
 from load import load_dataset, load_iris
 from training import *
 from models import *

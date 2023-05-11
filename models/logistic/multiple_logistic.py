@@ -1,5 +1,6 @@
 import numpy as np
 import math
+import matplotlib.pyplot as plt
 from .simple_logistic import SimpleLogisticRegression
 
 class MultipleLogisticRegression:
@@ -67,5 +68,13 @@ class MultipleLogisticRegression:
 
     # Funciones de Display
     def Display(self, all_losses):
-        #TODO
+        print(len(self.classes))
+        fig, axs = plt.subplots(len(self.classes), 1, figsize=(8, 6*len(self.classes)))
+        for i, cls in enumerate(self.classes):
+            axs[i].plot(all_losses[i])
+            axs[i].set_title(f'Loss for class {cls}')
+            axs[i].set_xlabel('Iteration')
+            axs[i].set_ylabel('Loss')
+        plt.tight_layout(pad=5.0)
+        plt.show()
         pass

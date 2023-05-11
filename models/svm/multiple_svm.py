@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 import math
 from .simple_svm import SimpleSoftSVM
 
@@ -65,5 +66,12 @@ class MultipleSoftSVM:
 
     # Funciones de Display
     def Display(self, all_losses):
-        #TODO
-        pass
+        print(len(self.classes))
+        fig, axs = plt.subplots(len(self.classes), 1, figsize=(8, 6*len(self.classes)))
+        for i, cls in enumerate(self.classes):
+            axs[i].plot(all_losses[i])
+            axs[i].set_title(f'Loss for class {cls}')
+            axs[i].set_xlabel('Iteration')
+            axs[i].set_ylabel('Loss')
+        plt.tight_layout(pad=5.0)
+        plt.show()

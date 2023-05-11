@@ -6,6 +6,7 @@ from .util import y2matrix
 
 def bootstrap_train(model, X, y, n_bootstraps=50, display=False):
     # Init results
+    ls_loss = []
     ls_accuaracy = []
     ls_auc       = []
     ls_precision = []
@@ -30,8 +31,8 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False):
             continue
 
         # Train model
-        model.fit(bX_train, by_train)
-
+        loss = model.fit(bX_train, by_train)
+        
         # Prediction
         y_pred = model.predict(bX_test)
         # METRICS: Accuracy
@@ -74,6 +75,9 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False):
         print(f"Mean Precision: {mean_precision}")
         print(f"Mean Recall: {mean_recall}")
         print(f"Mean F1: {mean_f1}")
+
+    if(loss): 
+        model.Display(loss)
 
     return mean_accuracy_score, mean_auc_score, mean_precision, mean_recall, mean_f1
 
