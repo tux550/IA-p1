@@ -59,7 +59,8 @@ def test_models(model_ls, X, y, db_name):
     m_results = {}
     for m in model_ls:
         print("Running:", m.name)
-        metrics = run_metrics(m, X, y, display_metrics=False, display_loss=True)
+        metrics = run_metrics(m, X, y, display_metrics=False, save_loss=True, save_dir=GRAF_FOLDER)
+        #metrics = run_metrics(m, X, y, display_metrics=False, display_loss=True)
         m_results[m.name] = metrics
 
     for method in METHODS:

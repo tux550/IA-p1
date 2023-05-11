@@ -65,14 +65,17 @@ class MultipleSoftSVM:
         return all_losses
 
     # Funciones de Display
-    def Display(self, all_losses):
+    def Display(self, all_losses, title='Loss for all classes', save=False, show=True, save_name=None):
         fig, ax = plt.subplots(figsize=(8,6))
         colors = ['blue', 'red', 'green']
         for i, cls in enumerate(self.classes):
             ax.plot(all_losses[i], color=colors[i], label=f'Class {cls}')
-        ax.set_title('Loss for all classes')
+        ax.set_title(title)
         ax.set_xlabel('Iteration')
         ax.set_ylabel('Loss')
         ax.legend()
         plt.tight_layout()
-        plt.show()
+        if show:
+            plt.show()
+        if save and save_name:
+            plt.savefig(save_name)

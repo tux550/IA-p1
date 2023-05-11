@@ -10,6 +10,7 @@ warnings.filterwarnings("ignore", category=UndefinedMetricWarning)
 cwd = os.getcwd()
 
 IMG_FOLDER = "imgs"
+GRAF_FOLDER = "graf"
 N_FEATURES = 20
 EPSILON = 1e-8
 N_CLASSES = 3

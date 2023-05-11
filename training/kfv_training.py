@@ -4,7 +4,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.metrics import precision_score, recall_score, f1_score, balanced_accuracy_score
 from .util import y2matrix
 
-def kfv_train(model, X, y, n_splits=10, display=False, display_loss=False):
+def kfv_train(model, X, y, n_splits=10, display=False, display_loss=False, save_loss=False, save_dir=None):
     # Init results
     ls_loss = []
     ls_accuaracy = []
@@ -77,10 +77,13 @@ def kfv_train(model, X, y, n_splits=10, display=False, display_loss=False):
         print(f"Mean Recall: {mean_recall}")
         print(f"Mean F1: {mean_f1}")
 
-    if(loss and display_loss):
+    if(loss):
         # Average loss 
         ls_loss = np.array(ls_loss)
         ls_loss = np.mean(ls_loss,axis=0)
-        model.Display(ls_loss)
+        if display_loss:
+            model.Display(ls_loss, title=f"{model.name}: Average Loss (K-Fold)", save=False, show=True, save_name=None)
+        if(save_loss and save_dir):
+            model.Display(ls_loss, title=f"{model.name}: Average Loss (K-Fold)", save=True, show=False, save_name=f"{save_dir}/loss_{model.name}_kfold.png")
 
     return mean_accuracy_score, mean_auc_score, mean_precision, mean_recall, mean_f1
