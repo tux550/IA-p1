@@ -6,9 +6,9 @@ from rich.table import Table
 
 console = Console()
 
-def run_metrics(model, x_train, y_train, n_splits=10, n_bootstraps=50, display_metrics=True, return_metrics=True):
-    k_accuracy, k_auc, k_precision, k_recall, k_f1 = kfv_train(model, x_train, y_train, n_splits=n_splits)
-    b_accuracy, b_auc, b_precision, b_recall, b_f1 = bootstrap_train(model, x_train, y_train, n_bootstraps=n_bootstraps)
+def run_metrics(model, x_train, y_train, n_splits=10, n_bootstraps=50, display_metrics=True, display_loss=True):
+    k_accuracy, k_auc, k_precision, k_recall, k_f1 = kfv_train(model, x_train, y_train, n_splits=n_splits, display_loss=display_loss)
+    b_accuracy, b_auc, b_precision, b_recall, b_f1 = bootstrap_train(model, x_train, y_train, n_bootstraps=n_bootstraps, display_loss=display_loss)
 
     # Metrics
     kfold_metrics     = {

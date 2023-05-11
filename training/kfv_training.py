@@ -2,10 +2,11 @@ import numpy as np
 from sklearn.model_selection import KFold
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import precision_score, recall_score, f1_score, balanced_accuracy_score
-from .util import y2matrix, get_classes
+from .util import y2matrix
 
-def kfv_train(model, X, y, n_splits=10, display=False):
+def kfv_train(model, X, y, n_splits=10, display=False, display_loss=False):
     # Init results
+    ls_loss = []
     ls_accuaracy = []
     ls_auc       = []
     ls_precision = []
@@ -26,8 +27,8 @@ def kfv_train(model, X, y, n_splits=10, display=False):
         cy_train, cy_test = y[train_index], y[test_index]
         
         # Train model
-        model.fit(cX_train, cy_train)
-
+        loss = model.fit(cX_train, cy_train)
+        ls_loss.append(loss)
 
         # Prediction
         y_pred = model.predict(cX_test) #print(np.unique(y_pred))
@@ -44,7 +45,6 @@ def kfv_train(model, X, y, n_splits=10, display=False):
         f1 = f1_score(cy_test,y_pred, average=None)
         ls_f1.append(f1)
 
-
         # Score
         #accuracy_score = model.score(cX_test, cy_test)
         #ls_accuaracy.append(accuracy_score)
@@ -60,7 +60,7 @@ def kfv_train(model, X, y, n_splits=10, display=False):
     mean_auc_score = sum(ls_auc) / len(ls_auc)
     ls_precision = np.array(ls_precision)
     ls_recall = np.array(ls_recall)
-    ls_f1 = np.array(f1)
+    ls_f1 = np.array(ls_f1)
     mean_precision = ls_precision.sum(axis=0) / len(ls_precision)
     mean_recall = ls_recall.sum(axis=0) / len(ls_recall)
     mean_f1 = ls_f1.sum(axis=0) / len(ls_f1)
@@ -76,5 +76,11 @@ def kfv_train(model, X, y, n_splits=10, display=False):
         print(f"Mean Precision: {mean_precision}")
         print(f"Mean Recall: {mean_recall}")
         print(f"Mean F1: {mean_f1}")
+
+    if(loss and display_loss):
+        # Average loss 
+        ls_loss = np.array(ls_loss)
+        ls_loss = np.mean(ls_loss,axis=0)
+        model.Display(ls_loss)
 
     return mean_accuracy_score, mean_auc_score, mean_precision, mean_recall, mean_f1

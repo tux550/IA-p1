@@ -4,7 +4,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.metrics import precision_score, recall_score, f1_score, balanced_accuracy_score
 from .util import y2matrix
 
-def bootstrap_train(model, X, y, n_bootstraps=50, display=False):
+def bootstrap_train(model, X, y, n_bootstraps=50, display=False, display_loss=False):
     # Init results
     ls_loss = []
     ls_accuaracy = []
@@ -32,7 +32,8 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False):
 
         # Train model
         loss = model.fit(bX_train, by_train)
-        
+        ls_loss.append(loss)
+
         # Prediction
         y_pred = model.predict(bX_test)
         # METRICS: Accuracy
@@ -46,7 +47,7 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False):
         ls_recall.append(recall)
         # METRICS: F1
         f1 = f1_score(by_test,y_pred, average=None)
-        ls_f1.append(f1)
+        ls_f1.append(ls_f1)
 
         # Score
         #accuracy_score = model.score(bX_test, by_test)
@@ -76,8 +77,10 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False):
         print(f"Mean Recall: {mean_recall}")
         print(f"Mean F1: {mean_f1}")
 
-    if(loss): 
-        model.Display(loss)
+    if(loss and display_loss): 
+        ls_loss = np.array(ls_loss)
+        ls_loss = np.mean(ls_loss,axis=0)
+        model.Display(ls_loss)
 
     return mean_accuracy_score, mean_auc_score, mean_precision, mean_recall, mean_f1
 
