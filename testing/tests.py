@@ -47,9 +47,14 @@ def test_knn(X,y,db_name,seed=42):
     print("--- TEST KNN ---")
 
     print("Testing parameter: distance")
-    def_args = {}
+    def_args = {"k":3}
     distance = ["minkowski","cityblock","chebyshev"]
     test_param(KNN, X, y, "distance", distance, def_args,db_name)
+
+    print("Testing parameter: distance")
+    def_args = {"distance":"cityblock"}
+    ks = [1,3,5,7,9]
+    test_param(KNN, X, y, "k", ks, def_args,db_name)
 
 def test_dt(X,y,db_name,seed=42):
     random.seed(seed)
