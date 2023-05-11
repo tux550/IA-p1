@@ -1,10 +1,12 @@
 import numpy as np
 from sklearn.model_selection import KFold
 from sklearn.metrics import roc_auc_score
-from sklearn.metrics import precision_score, recall_score, f1_score, balanced_accuracy_score
-from .util import y2matrix
+from sklearn.metrics import precision_score, recall_score, f1_score, balanced_accuracy_score, confusion_matrix
+from .util import y2matrix, get_classes
 
-def kfv_train(model, X, y, n_splits=10, display=False, display_loss=False, save_loss=False, save_dir=None):
+def kfv_train(model, X, y, n_splits=10, display=False,  display_cm=False, display_loss=False, save_loss=False, save_dir=None):
+    n_classes = len(get_classes(y))
+
     # Init results
     ls_loss = []
     ls_accuaracy = []
@@ -12,6 +14,7 @@ def kfv_train(model, X, y, n_splits=10, display=False, display_loss=False, save_
     ls_precision = []
     ls_recall    = []
     ls_f1        = []
+    cm           = np.zeros((n_classes,n_classes))
 
     # KFold
     kf             = KFold(
@@ -45,6 +48,10 @@ def kfv_train(model, X, y, n_splits=10, display=False, display_loss=False, save_
         f1 = f1_score(cy_test,y_pred, average=None)
         ls_f1.append(f1)
 
+        # Confusion Matrix
+        if display_cm:
+            cm += confusion_matrix(cy_test,y_pred)
+
         # Score
         #accuracy_score = model.score(cX_test, cy_test)
         #ls_accuaracy.append(accuracy_score)
@@ -76,6 +83,10 @@ def kfv_train(model, X, y, n_splits=10, display=False, display_loss=False, save_
         print(f"Mean Precision: {mean_precision}")
         print(f"Mean Recall: {mean_recall}")
         print(f"Mean F1: {mean_f1}")
+
+    if display_cm:
+        cm = cm/n_splits
+        print(cm)
 
     if(loss):
         # Average loss 

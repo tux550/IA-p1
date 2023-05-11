@@ -17,13 +17,13 @@ x_train, x_test, y_train = load_dataset(N=20)
 
 
 # TRAIN & TEST
-test_all(x_train, y_train, "DB", seed=42)
-compare_models(x_train, y_train, "DB", seed=42)
+#test_all(x_train, y_train, "DB", seed=42)
+#compare_models(x_train, y_train, "DB", seed=42)
 
 #"""
 #Debug with iris
-#test_all(x_iris, y_iris, "Iris", seed=42)
-#compare_models(x_iris, y_iris, "Iris", seed=42)
+test_all(x_iris, y_iris, "Iris", seed=42)
+compare_models(x_iris, y_iris, "Iris", seed=42)
 #"""
 
 """

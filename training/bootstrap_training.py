@@ -1,10 +1,12 @@
 import numpy as np
 from sklearn.utils import resample
 from sklearn.metrics import roc_auc_score
-from sklearn.metrics import precision_score, recall_score, f1_score, balanced_accuracy_score
-from .util import y2matrix
+from sklearn.metrics import precision_score, recall_score, f1_score, balanced_accuracy_score, confusion_matrix
+from .util import y2matrix, get_classes
 
-def bootstrap_train(model, X, y, n_bootstraps=50, display=False, display_loss=False, save_loss=False, save_dir=None):
+def bootstrap_train(model, X, y, n_bootstraps=50, display=False, display_cm=False, display_loss=False, save_loss=False, save_dir=None):
+    n_classes = len(get_classes(y))
+
     # Init results
     ls_loss = []
     ls_accuaracy = []
@@ -12,6 +14,7 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False, display_loss=Fa
     ls_precision = []
     ls_recall    = []
     ls_f1        = []
+    cm           = np.zeros((n_classes,n_classes))
 
     # Bootstrap Train-Test loop
     rng = np.arange(len(y))
@@ -47,7 +50,11 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False, display_loss=Fa
         ls_recall.append(recall)
         # METRICS: F1
         f1 = f1_score(by_test,y_pred, average=None)
-        ls_f1.append(ls_f1)
+        ls_f1.append(f1)
+
+        # Confusion Matrix
+        if display_cm:
+            cm += confusion_matrix(by_test,y_pred)
 
         # Score
         #accuracy_score = model.score(bX_test, by_test)
@@ -76,6 +83,10 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False, display_loss=Fa
         print(f"Mean Precision: {mean_precision}")
         print(f"Mean Recall: {mean_recall}")
         print(f"Mean F1: {mean_f1}")
+
+    if display_cm:
+        cm = cm/n_bootstraps
+        print(cm)
 
     if(loss): 
         ls_loss = np.array(ls_loss)
