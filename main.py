@@ -20,7 +20,7 @@ from models import *
 np.set_printoptions(precision = 5, floatmode="fixed", suppress = True)
 
 # LOAD DATASET
-x_iris, y_iris = load_iris()
+#x_iris, y_iris = load_iris()
 x_train, x_test, y_train = load_dataset(N=20)
 
 
