@@ -6,16 +6,8 @@ from load import load_dataset, load_iris
 from training import *
 from models import *
 
-# VISUALIZACION PENDIENTE
-#TODO: Display training (Promedio de loss: SVM y Regression logistica)
-
-# TEST
-# TODO: Test between models
-#TODO: Confusion matrix (solo en el mejor de cada modelo)
-
-# Extra
-# TODO: Test batch size
-#TODO: Fix SVM/Reg Auc
+# TODO LIST
+#- Confusion matrix (para los mejores casos en compare_models)
 
 np.set_printoptions(precision = 5, floatmode="fixed", suppress = True)
 
@@ -25,13 +17,13 @@ x_train, x_test, y_train = load_dataset(N=20)
 
 
 # TRAIN & TEST
-#test_all(x_train, y_train, "DB", seed=42)
-#compare_models(x_train, y_train, "DB", seed=42)
+test_all(x_train, y_train, "DB", seed=42)
+compare_models(x_train, y_train, "DB", seed=42)
 
 #"""
 #Debug with iris
 #test_all(x_iris, y_iris, "Iris", seed=42)
-compare_models(x_iris, y_iris, "Iris", seed=42)
+#compare_models(x_iris, y_iris, "Iris", seed=42)
 #"""
 
 """
