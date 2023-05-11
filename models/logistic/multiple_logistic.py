@@ -68,12 +68,14 @@ class MultipleLogisticRegression:
 
     # Funciones de Display
     def Display(self, all_losses):
-        fig, axs = plt.subplots(len(self.classes), 1, figsize=(8, 6*len(self.classes)))
+        fig, ax = plt.subplots(figsize=(8,6))
+        colors = ['blue', 'red', 'green']
         for i, cls in enumerate(self.classes):
-            axs[i].plot(all_losses[i])
-            axs[i].set_title(f'Loss for class {cls}')
-            axs[i].set_xlabel('Iteration')
-            axs[i].set_ylabel('Loss')
-        plt.tight_layout(pad=5.0)
+            ax.plot(all_losses[i], color=colors[i], label=f'Class {cls}')
+        ax.set_title('Loss for all classes')
+        ax.set_xlabel('Iteration')
+        ax.set_ylabel('Loss')
+        ax.legend()
+        plt.tight_layout()
         plt.show()
 
