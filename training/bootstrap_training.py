@@ -64,7 +64,7 @@ def bootstrap_train(model, X, y, n_bootstraps=50, display=False, display_loss=Fa
     mean_auc_score = sum(ls_auc) / len(ls_auc)
     ls_precision = np.array(ls_precision)
     ls_recall = np.array(ls_recall)
-    ls_f1 = np.array(f1)
+    ls_f1 = np.array(ls_f1)
     mean_precision = ls_precision.sum(axis=0) / len(ls_precision)
     mean_recall = ls_recall.sum(axis=0) / len(ls_recall)
     mean_f1 = ls_f1.sum(axis=0) / len(ls_f1)
