@@ -24,8 +24,13 @@ def test_svm(X,y,db_name,seed=42):
     np.random.seed(seed) 
     print("--- TEST SVM ---")
 
+    print("Testing parameter: c")
+    def_args = {"epochs":3000, "alpha":0.0001}
+    cs =  [0.5,1,5,10,20,30]
+    test_param(MultipleSoftSVM, X, y, "c", cs, def_args,db_name)
+
     print("Testing parameter: epochs")
-    def_args = {"alpha":0.001, "c":20}
+    def_args = {"alpha":0.0001, "c":20}
     epochs = [500,1000,1500,2000,2500,3000]
     test_param(MultipleSoftSVM, X, y, "epochs", epochs, def_args,db_name)
 
@@ -33,12 +38,6 @@ def test_svm(X,y,db_name,seed=42):
     def_args = {"epochs":3000, "c":20}
     alphas = [0.0001,0.001,0.01]# Valores mayores producen error de overflow ,0.1,1]
     test_param(MultipleSoftSVM, X, y, "alpha", alphas, def_args,db_name)
-
-    print("Testing parameter: c")
-    def_args = {"epochs":3000, "alpha":0.001}
-    cs =  [0.5,1,5,10,20,30]
-    test_param(MultipleSoftSVM, X, y, "c", cs, def_args,db_name)
-
 
 
 def test_knn(X,y,db_name,seed=42):
@@ -75,7 +74,7 @@ def test_all(X,y,db_name,seed=42):
 def compare_models(X, y, db_name, seed=42):
     ls_models = [
         MultipleLogisticRegression(alpha=1, epochs=3000),
-        MultipleSoftSVM(alpha=0.0001, c=1, epochs=3000),
+        MultipleSoftSVM(alpha=0.0001, c=20, epochs=3000),
         KNN(distance="cityblock"),
         DecisionTree(max_depth=None)
     ]
