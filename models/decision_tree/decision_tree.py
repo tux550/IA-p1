@@ -16,8 +16,11 @@ class DecisionTree:
     # PREDICT
     def predict(self, X):
         Y = []
+        # Para cada X encontrar el label del nodo hoja
         for x in X:
+            # Inicializar en nodo raiz
             node = self.root
+            # Recorrer hasta nodo hoja
             while node.label is None:
                 if x[node.index] < node.boundary:
                     node = node.lt_child
@@ -37,13 +40,17 @@ class DecisionTree:
     # CLASS PROB
     def class_prob(self, X):
         predictions = []
+        # Para cada X encontrar las probabilidades del nodo hoja
         for x in X:
+            # Inicializar en nodo raiz
             node = self.root
+            # Recorrer hasta nodo hoja
             while node.label is None:
                 if x[node.index] < node.boundary:
                     node = node.lt_child
                 else:
                     node = node.ge_child
+            # Guardar Probabilidad de nodo hoja
             y = node.prob
             predictions.append(y)
         return np.array(predictions)
@@ -57,6 +64,7 @@ class DecisionTree:
     def Train(self, X, y):
         y = y.reshape(-1)
         self.classes = self.get_classes(y)
+        # Crear nodo raiz (con metodo recursivo)
         self.root = Nodo(X,y,self.classes, max_depth=self.max_depth, depth=0)
         return None
 

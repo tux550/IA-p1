@@ -21,10 +21,12 @@ class MultipleSoftSVM:
 
     # PREDICT
     def predict(self, X):
+        # Get prediction confidence for each model
         predictions = []
         for m in self.models:
             m_pred = m.Hiperplano(X)
             predictions.append(m_pred.reshape(-1,1))
+        # Return class with highest confidence
         predictions = np.concatenate(predictions, axis=1)
         cls_index   = np.argmax(predictions, axis=1)
         return np.array([self.classes[i] for i in cls_index]).reshape(-1, 1)
@@ -37,11 +39,12 @@ class MultipleSoftSVM:
     
     # CLASS PROB
     def class_prob(self, X):
-        # TODO: Plat scaling &  MLE (Maximum Likelihood estimator)
+        # Get simplified platt scaling probability for each model
         predictions = []
         for m in self.models:
             m_pred = m.prob(X)
             predictions.append(m_pred)
+        # Soft max probabilities
         predictions = np.concatenate(predictions, axis=1)
         added_pred  = np.sum(predictions, axis=1)
         prob        = (predictions / added_pred[:,None])
@@ -56,7 +59,9 @@ class MultipleSoftSVM:
         self.classes = self.get_classes(y)
         self.models = []
         all_losses = []
+        # Train SimpleSoftMax for each class
         for cls in self.classes:
+            # Transformar Y a un arreglo OvR para la clase "cls"
             y_prime = ( (y == cls).astype(int)*2 -1) # 1: Pertenece, -1: No pertenece
             model   = SimpleSoftSVM(self.epochs, self.c, self.alpha, epsilon=self.epsilon)
             losses = model.Train(X, y_prime)

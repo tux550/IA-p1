@@ -79,11 +79,12 @@ class Nodo:
 
 
   def SplitByIndex(X, Y, index, boundary, classes, max_depth, depth):
-    # write your code here
+    # Init children X,Y
     lt_x = []
     lt_y = []
     ge_x = []
     ge_y = []
+    # Split X,Y by boundary
     for x,y in zip(X,Y):
       if x[index] < boundary:
         lt_x.append(x)
@@ -91,14 +92,17 @@ class Nodo:
       else:
         ge_x.append(x)
         ge_y.append(y)
+    # Create children nodes
     lt_child = Nodo(lt_x, lt_y, classes, max_depth, depth+1)
     ge_child = Nodo(ge_x, ge_y, classes, max_depth, depth+1)
+    # Return reference to node children
     return lt_child, ge_child
 
   def Entropy(X, Y, index, boundary):
     # ENTROPY GAIN
 
-    # Calc entropy in nodes
+    # Create dictionaries counting instances of each class in
+    # the left and right node defined by index & boundary
     label_count_lt = dict()
     count_lt = 0
     label_count_ge = dict()
@@ -122,16 +126,18 @@ class Nodo:
         else:
           label_count_lt[y] = 1
 
+    # Calc entropy in nodes
+    # Left Node
     ent_lt = 0
     for label in label_count_lt:
       prob_label = label_count_lt[label]/count_lt
       ent_lt += (-prob_label * math.log(prob_label, 2))
-    
+    # Right node
     ent_ge = 0
     for label in label_count_ge:
       prob_label = label_count_ge[label]/count_ge
       ent_ge += (-prob_label * math.log(prob_label, 2))
-
+    # Weighted nodes entropy
     total_count = count_ge + count_lt
     weighted_ent_sum = ent_ge * (count_ge/total_count) + ent_lt * (count_lt/total_count)
 

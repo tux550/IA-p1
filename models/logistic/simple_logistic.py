@@ -14,8 +14,10 @@ class SimpleLogisticRegression:
 
     # PREDICT
     def predict(self, X):
+        # Calc s(x)
         X          = self.add_bias(X)
         prediction = self.Sigmoid(X)
+        # Round s(x) to Class 0 or 1
         rounded    = np.round(prediction).astype(int)
         prediction = np.where(rounded > 0.5, 1, 0)
         return prediction.reshape(-1, 1)
@@ -28,6 +30,7 @@ class SimpleLogisticRegression:
 
     # Funciones de Utilidad
     def gen_w(self, N):
+        # Generate random weights
         w = [np.random.rand() for i in range(0, N)]
         w = np.array(w)
         w = w.reshape((N, 1))

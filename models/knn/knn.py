@@ -17,9 +17,10 @@ class KNN:
     # PREDICT
     def predict(self, X):
         predictions = []
-        for x in X:
+        # For each point
+        for x in X:            
             x = x.reshape(1,-1)
-            # Get classes of knn
+            # Get classes of k nearest neighbors from kd_tree
             _, ind    = self.x_tree.query(x, k=self.k)
             pred_classes = np.array([self.y_train[i] for i in ind])
             # Vote
@@ -36,12 +37,13 @@ class KNN:
     # CLASS PROB
     def class_prob(self, X):
         probs = []
+        # For each point
         for x in X:
             x = x.reshape(1,-1)
-            # Get classes of knn
+            # Get classes of k nearest neighbors from kd_tree
             _, ind    = self.x_tree.query(x, k=self.k)
             pred_classes = np.array([self.y_train[i] for i in ind])
-            # Vote
+            # Get probability of each class by counting instances of each class
             _, prob = KNN.MostCommon(pred_classes, self.classes)
             probs.append(prob)
         return np.array(probs)
@@ -52,7 +54,7 @@ class KNN:
         return np.unique(y)
 
     def MostCommon(Y, classes):
-        # return most common label
+        # return most common label & probabilities of each class
         values, counts = np.unique(Y, return_counts=True)
         total = counts.sum()
         cls_count = dict()

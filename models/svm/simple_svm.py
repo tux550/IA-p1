@@ -31,7 +31,7 @@ class SimpleSoftSVM:
 
     # CLASS PROB
     def class_prob(self, X):
-        # TODO: Plat scaling &  MLE (Maximum Likelihood estimator)
+        # Probabilidad con Plat Scaling Simplificado
         p        = self.prob(X)
         prob_mat = np.concatenate([1-p,p], axis=1)
         return prob_mat
@@ -76,6 +76,7 @@ class SimpleSoftSVM:
         return loss
     
     def Derivatives(self, x, y):
+        # Optimized version
         prod   = y*self.Hiperplano(x) 
         ifcase = (prod < 1).reshape(-1,1)
         yvec   = y.reshape(-1,1) 

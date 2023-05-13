@@ -18,11 +18,14 @@ class MultipleLogisticRegression:
 
     # PREDICT
     def predict(self, X):
+        # Add bias to X
         X = self.add_bias(X)
+        # Get prediction for each class
         predictions = []
         for m in self.models:
             m_pred = m.Sigmoid(X)
             predictions.append(m_pred)
+        # Get class with biggest probability for each point
         predictions = np.concatenate(predictions, axis=1)
         cls_index   = np.argmax(predictions, axis=1)
         return np.array([self.classes[i] for i in cls_index]).reshape(-1, 1)
@@ -35,11 +38,14 @@ class MultipleLogisticRegression:
     
     # CLASS PROB
     def class_prob(self, X):
+        # Add bias to X
         X = self.add_bias(X)
+        # Get probabilities for each class
         predictions = []
         for m in self.models:
             m_pred = m.Sigmoid(X)
             predictions.append(m_pred)
+        # Softmax proabilities of classes for each point
         predictions = np.concatenate(predictions,axis=1)
         added_pred  = np.sum(predictions, axis=1)
         prob        = (predictions / added_pred[:,None])
@@ -58,8 +64,11 @@ class MultipleLogisticRegression:
         self.classes = self.get_classes(y)
         self.models = []
         all_losses = []
+        # Entrenar un SimpleLogistic por cada clase
         for cls in self.classes:
+            # Transformar Y a un arreglo de OvR para la clase "cls"
             y_prime = (y == cls).astype(int)
+            # Train model
             model   = SimpleLogisticRegression(self.epochs, self.alpha, self.epsilon)
             losses = model.Train(X, y_prime)
             self.models.append(model)
